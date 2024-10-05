@@ -3,9 +3,7 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 
-path = "./acc_gps/Location.csv"
-
-# url = "https://raw.githubusercontent.com/ilpovirt/streamlit_map/main/GPSdata.csv"
+url = "https://raw.githubusercontent.com/uhoney/fysiikka_loppuprojekti/refs/heads/main/acc_gps/Location.csv"
 df = pd.read_csv(url)
 
 st.title("Kävely")
