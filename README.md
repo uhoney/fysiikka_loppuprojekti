@@ -1,6 +1,10 @@
 # 'Soveltava matematiikka ja fysiikka ohjelmoinnissa' kurssin fysiikan osuuden loppuprojekti
 Virtuaaliympäristössä samat paketit kuin kurssilla, poislukien black formatter.
 
+## Käynnistä lopputyö
+```bash
+streamlit run main.py
+```
 ## Itselle muistiin miten saa nopeasti uuden venvin ja asenneltua paketit:
 ### Asenna uusi virtuaalinen ympäristö
 ```bash

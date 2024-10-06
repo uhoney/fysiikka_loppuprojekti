@@ -1,5 +1,7 @@
-from math import radians, cos, sin, asin, sqrt
 import numpy as np
+import pandas as pd
+from scipy.signal import butter, filtfilt
+from math import radians, cos, sin, asin, sqrt
 
 
 def haversine(lon1, lat1, lon2, lat2):  # Kahden pisteen koordinaatit
@@ -19,7 +21,9 @@ def haversine(lon1, lat1, lon2, lat2):  # Kahden pisteen koordinaatit
 
 
 def addTravelDistanceToDataFrame(df):
-
+    """
+    TODO: add description
+    """
     lat = df["Latitude (°)"]
     lon = df["Longitude (°)"]
 
@@ -34,3 +38,50 @@ def addTravelDistanceToDataFrame(df):
         tmp_distances[i] = haversine(lon[i], lat[i], lon[i + 1], lat[i + 1])
 
     return np.cumsum(tmp_distances)
+
+
+def butter_lowpass(data, cutoff, nyq, order):
+    normal_cutoff = cutoff / nyq
+    # filter coefficients
+    b, a = butter(order, normal_cutoff, btype="low", analog=False)
+    y = filtfilt(b, a, data)
+    return y
+
+
+def butter_highpass(data, cutoff, nyq, order):
+    normal_cutoff = cutoff / nyq
+    # filter coefficients
+    b, a = butter(order, normal_cutoff, btype="high", analog=False)
+    y = filtfilt(b, a, data)
+    return y
+
+
+def filterWithButterLow(tmp, component, cutoff):
+    """
+    TODO: add description
+    """
+    # Filter parameters:
+    T = tmp["Time (s)"][len(tmp["Time (s)"]) - 1] - tmp["Time (s)"][0]
+    n = len(tmp["Time (s)"])  # Datapisteiden määrä
+    fs = n / T  # Näytteenottotaajuus (oletus, että jotekuten vakio)
+    nyq = fs / 2  # Nyquist-taajuus
+    order = 3  # Kertaluku
+    cutoff = 1 / (cutoff)  # Cutoff-taajuus
+
+    # Valitun komponentin suodatus butter_lowpassilla
+    filtered_low = butter_lowpass(tmp[f"Acceleration {component} (m/s^2)"], cutoff, nyq, order)
+
+    return filtered_low
+
+
+def getStepsFromFilteredData(filteredComponent):
+    """
+    TODO: add description
+    """
+    # Laske x-akselin ylitykset ajanjaksolla. return askelmäärä
+    crossing = 0
+    for i in range(len(filteredComponent) - 1):
+        if filteredComponent[i] / filteredComponent[i + 1] < 0:
+            crossing += 1
+
+    return np.floor(crossing / 2)
