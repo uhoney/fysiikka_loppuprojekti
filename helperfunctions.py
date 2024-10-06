@@ -6,23 +6,22 @@ from math import radians, cos, sin, asin, sqrt
 
 def haversine(lon1, lat1, lon2, lat2):  # Kahden pisteen koordinaatit
     """
-    Calculate the great circle distance in kilometers between two points  on the earth (specified in decimal degrees)
+    Calculate distance in kilometers between two points on earth (specified in decimal degrees)
     """
     # convert decimal degrees to radians
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 
-    # haversine kaava
     dlon = lon2 - lon1
     dlat = lat2 - lat1
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     c = 2 * asin(sqrt(a))
-    r = 6371  # Maapallon säde
-    return c * r  # Palauttaa koordinaattien välisen etäisyyden maapallon pintaa pitkin.
+    r = 6371  # Radius of earth
+    return c * r
 
 
 def addTravelDistanceToDataFrame(df):
     """
-    TODO: add description
+    Adds distances to dataframe between poins in kilometers
     """
     lat = df["Latitude (°)"]
     lon = df["Longitude (°)"]
@@ -84,4 +83,4 @@ def getStepsFromFilteredData(filteredComponent):
         if filteredComponent[i] / filteredComponent[i + 1] < 0:
             crossing += 1
 
-    return np.floor(crossing / 2)
+    return int(np.floor(crossing / 2))
