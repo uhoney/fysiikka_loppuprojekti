@@ -7,8 +7,12 @@ import numpy as np
 import helperfunctions as hf
 
 # url = "https://raw.githubusercontent.com/uhoney/fysiikka_loppuprojekti/refs/heads/main/acc_gps/Location.csv"
-url = "./acc_gps/Location.csv"
-url2 = "./acc_gps/Accelerometer.csv"
+
+# url = "./acc_gps/Location.csv"
+# url2 = "./acc_gps/Accelerometer.csv"
+
+url = "./linear_acc/Location.csv"
+url2 = "./linear_acc/Linear Acceleration.csv"
 
 location = pd.read_csv(url)
 acceleration = pd.read_csv(url2)
@@ -23,7 +27,7 @@ totalDistanceTravelled = location["Travel distance"].max()
 averageSpeed = location["Velocity (m/s)"].max()
 
 # Suodata kiihtyvyskomponentti scipyn butter lowpassilla
-filteredAccelerationData = hf.filterWithButterLow(acceleration, "z", 0.5)
+filteredAccelerationData = hf.filterWithButterLow(acceleration, "y", 0.2)
 stepsFromFilteredData = hf.getStepsFromFilteredData(filteredAccelerationData)
 
 # Askelpituus suodatetusta datasta
@@ -38,15 +42,17 @@ strideLengthFromFilteredData = (totalDistanceTravelled / stepsFromFilteredData) 
 # Title
 st.title("Fysiikka loppuprojekti")
 
-st.write(f"""#### Kuljettu matka (location): {totalDistanceTravelled:.2f} km""")
-st.write(f"""#### Keskinopeus (location): {averageSpeed:.2f} m/s""")
-st.write(f"""#### Askelpituus (accelerometer): {strideLengthFromFilteredData:.2f} m""")
-st.write(f"""#### Askeleet (accelerometer, filtered): {stepsFromFilteredData}""")
-st.write(f"""#### Askeleet (accelerometer, fourier): {0}""")
+st.write(f"#### Kuljettu matka (location): {totalDistanceTravelled:.2f} km")
+st.write(f"#### Keskinopeus (location): {averageSpeed:.2f} m/s")
+st.write(f"#### Askelpituus (accelerometer): {strideLengthFromFilteredData:.2f} m")
+st.write(f"#### Askeleet (accelerometer, filtered): {stepsFromFilteredData}")
+st.write(f"#### Askeleet (accelerometer, fourier): {0}")
 
 
 # draw line plot
-st.line_chart(location, x="Time (s)", y="Travel distance", y_label="Distance", x_label="Time")
+st.line_chart(
+    location, x="Time (s)", y="Travel distance", y_label="Distance", x_label="Time"
+)
 
 # Create a map where the center is at start_lat start_long and zoom level is defined
 start_lat = location["Latitude (°)"].mean()

@@ -56,10 +56,7 @@ def butter_highpass(data, cutoff, nyq, order):
 
 
 def filterWithButterLow(tmp, component, cutoff):
-    """
-    TODO: add description
-    """
-    # Filter parameters:
+
     T = tmp["Time (s)"][len(tmp["Time (s)"]) - 1] - tmp["Time (s)"][0]
     n = len(tmp["Time (s)"])  # Datapisteiden määrä
     fs = n / T  # Näytteenottotaajuus (oletus, että jotekuten vakio)
@@ -68,15 +65,14 @@ def filterWithButterLow(tmp, component, cutoff):
     cutoff = 1 / (cutoff)  # Cutoff-taajuus
 
     # Valitun komponentin suodatus butter_lowpassilla
-    filtered_low = butter_lowpass(tmp[f"Acceleration {component} (m/s^2)"], cutoff, nyq, order)
+    filtered_low = butter_lowpass(
+        tmp[f"Acceleration {component} (m/s^2)"], cutoff, nyq, order
+    )
 
     return filtered_low
 
 
 def getStepsFromFilteredData(filteredComponent):
-    """
-    TODO: add description
-    """
     # Laske x-akselin ylitykset ajanjaksolla. return askelmäärä
     crossing = 0
     for i in range(len(filteredComponent) - 1):
