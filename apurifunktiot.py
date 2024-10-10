@@ -49,7 +49,7 @@ def alipaastoPlottaus(dataframe, component, cutoff):
     normal_cutoff = cutoff / nyq
     b, a = butter(order, normal_cutoff, btype="low", analog=False)
 
-    filtered_low = filtfilt(b, a, dataframe[f"Acceleration {component} (m/s^2)"])
+    filtered_low = filtfilt(b, a, dataframe[f"Linear Acceleration {component} (m/s^2)"])
 
     return filtered_low
 
@@ -64,8 +64,8 @@ def laskeAskeleet(filteredComponent):
     return int(np.floor(crossing / 2))
 
 
-def fourierAskeleet(dataframe):
-    f = dataframe["Acceleration z (m/s^2)"]
+def fourierAskeleet(dataframe, component):
+    f = dataframe[f"Linear Acceleration {component} (m/s^2)"]
     t = dataframe["Time (s)"]  # Aika
     N = len(dataframe)  # Havaintojen määrä
     dt = np.mean(np.diff(t))  # Keskimääräinen näytteenottoväli
@@ -78,8 +78,8 @@ def fourierAskeleet(dataframe):
     return round(freq[L][psd[L] == np.max(psd[L])][0] * np.max(t))
 
 
-def tehospektri(dataframe):
-    f = dataframe["Acceleration z (m/s^2)"]
+def tehospektri(dataframe, component):
+    f = dataframe[f"Linear Acceleration {component} (m/s^2)"]
     t = dataframe["Time (s)"]  # Aika
     N = len(dataframe)  # Havaintojen määrä
     dt = np.mean(np.diff(t))  # Keskimääräinen näytteenottoväli
@@ -88,4 +88,6 @@ def tehospektri(dataframe):
     freq = np.fft.fftfreq(N, dt)
     L = np.arange(1, int(N / 2))
 
-    return pd.DataFrame(np.transpose(np.array([freq[L], psd[L].real])), columns=["freq", "psd"])
+    return pd.DataFrame(
+        np.transpose(np.array([freq[L], psd[L].real])), columns=["freq", "psd"]
+    )
