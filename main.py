@@ -8,7 +8,7 @@ import numpy as np
 import apurifunktiot as af
 
 url = "https://raw.githubusercontent.com/uhoney/fysiikka_loppuprojekti/refs/heads/main/linear_acc_gps/Location.csv"
-url2 = "https://raw.githubusercontent.com/uhoney/fysiikka_loppuprojekti/refs/heads/main/linear_acc_gps/Linear Acceleration.csv"
+url2 = "https://raw.githubusercontent.com/uhoney/fysiikka_loppuprojekti/refs/heads/main/linear_acc_gps/Linear%20Acceleration.csv"
 
 # url = "./linear_acc_gps/Location.csv"
 # url2 = "./linear_acc_gps/Linear Acceleration.csv"
