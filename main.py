@@ -7,13 +7,11 @@ import pandas as pd
 import numpy as np
 import apurifunktiot as af
 
-# url = "https://raw.githubusercontent.com/uhoney/fysiikka_loppuprojekti/refs/heads/main/acc_gps/Location.csv"
+url = "https://raw.githubusercontent.com/uhoney/fysiikka_loppuprojekti/refs/heads/main/linear_acc_gps/Location.csv"
+url2 = "https://raw.githubusercontent.com/uhoney/fysiikka_loppuprojekti/refs/heads/main/linear_acc_gps/Linear Acceleration.csv"
 
-# url = "./acc_gps/Location.csv"
-# url2 = "./acc_gps/Accelerometer.csv"
-
-url = "./linear_acc_gps/Location.csv"
-url2 = "./linear_acc_gps/Linear Acceleration.csv"
+# url = "./linear_acc_gps/Location.csv"
+# url2 = "./linear_acc_gps/Linear Acceleration.csv"
 
 lokaatio = pd.read_csv(url)
 kiihtyvyys = pd.read_csv(url2)
